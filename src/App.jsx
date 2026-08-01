@@ -27,7 +27,11 @@ export default function App() {
   const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(() => {
-    return localStorage.getItem('mode') === 'light';
+    try {
+      return localStorage.getItem('mode') === 'light';
+    } catch {
+      return false;
+    }
   });
 
   // Apply theme attribute to html tag
@@ -39,10 +43,10 @@ export default function App() {
   useEffect(() => {
     if (isLightMode) {
       document.documentElement.classList.add('light');
-      localStorage.setItem('mode', 'light');
+      try { localStorage.setItem('mode', 'light'); } catch {}
     } else {
       document.documentElement.classList.remove('light');
-      localStorage.setItem('mode', 'dark');
+      try { localStorage.setItem('mode', 'dark'); } catch {}
     }
   }, [isLightMode]);
 
