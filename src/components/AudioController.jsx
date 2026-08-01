@@ -51,6 +51,7 @@ export default function AudioController() {
 
   // ── Load voices (Chrome loads them async) ──────────────────────────────
   useEffect(() => {
+    if (!window.speechSynthesis) return;
     const load = () => setVoicesLoaded(true);
     window.speechSynthesis.addEventListener('voiceschanged', load);
     // Try immediately in case they're already loaded (Firefox, Safari)
@@ -60,6 +61,7 @@ export default function AudioController() {
 
   // ── Pick the best female English voice ────────────────────────────────
   const getFemaleVoice = () => {
+    if (!window.speechSynthesis) return null;
     const voices = window.speechSynthesis.getVoices();
     // Prefer high-quality female voices by name (works on Chrome / Edge / Windows)
     const preferred = [
@@ -126,19 +128,19 @@ export default function AudioController() {
         setCurrentLabel('');
       };
 
-      window.speechSynthesis.speak(utterance);
+      if (window.speechSynthesis) window.speechSynthesis.speak(utterance);
     }, 900);
   };
 
   // ── Start / Stop TTS Tour ─────────────────────────────────────────────
   const handleToggleTTS = () => {
     if (ttsPlaying) {
-      window.speechSynthesis.cancel();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       isTourRunningRef.current = false;
       setTtsPlaying(false);
       setCurrentLabel('');
     } else {
-      window.speechSynthesis.cancel();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       isTourRunningRef.current = true;
       setTtsPlaying(true);
       speakSegment(tourIndexRef.current);
@@ -147,7 +149,7 @@ export default function AudioController() {
 
   // ── Skip to next section ───────────────────────────────────────────────
   const handleSkip = () => {
-    window.speechSynthesis.cancel();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     const next = Math.min(tourIndexRef.current + 1, TOUR_SECTIONS.length - 1);
     if (ttsPlaying) speakSegment(next);
   };
@@ -245,7 +247,7 @@ export default function AudioController() {
   useEffect(() => {
     return () => {
       stopSynth();
-      window.speechSynthesis.cancel();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       isTourRunningRef.current = false;
       stopSpeechRecognition();
     };
