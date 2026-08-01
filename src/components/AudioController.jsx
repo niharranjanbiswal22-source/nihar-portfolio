@@ -134,6 +134,11 @@ export default function AudioController() {
 
   // ── Start / Stop TTS Tour ─────────────────────────────────────────────
   const handleToggleTTS = () => {
+    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+      alert("Oops! The AI Voice Assistant is not supported inside this app's browser (like Instagram/Facebook). Please open the website in Google Chrome or Safari for the full interactive experience! 🎙️✨");
+      return;
+    }
+
     if (ttsPlaying) {
       if (window.speechSynthesis) window.speechSynthesis.cancel();
       isTourRunningRef.current = false;
