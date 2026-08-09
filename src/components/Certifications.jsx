@@ -30,6 +30,19 @@ const certs = [
     description: "Certified completion of the JAVA Programming course at MSCB University, conducted under the Aakanksha IT Hub initiative (ITDA Baripada, Mayurbhanj). Demonstrated satisfactory performance across all required training modules."
   },
   {
+    id: 10,
+    title: "RTCCA - 2025 (National Conference)",
+    issuer: "Maharaja Sriram Chandra Bhanja Deo University",
+    date: "March 27-28, 2025",
+    color: "from-purple-600 to-indigo-500",
+    glow: "shadow-[0_0_15px_rgba(124,58,237,0.25)] border-purple-500/30",
+    badgeColor: "text-purple-500 bg-purple-500/10",
+    hash: "RTCCA-25-MSCB",
+    image: "/cert_rtcca_2025.jpg",
+    caption: "🎓 National Conference Participant — MSCB University",
+    description: "Participated in the National Conference on Recent Trends in Computing, Communication and Applications (RTCCA-2025) organized by the Department of Computer Application."
+  },
+  {
     id: 3,
     title: "Odisha AI Symposium 2025 (OAIS)",
     issuer: "Odisha AI & NIST Berhampur",
