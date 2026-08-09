@@ -96,12 +96,25 @@ const projects = [
   {
     id: 8,
     title: "Criminal Face Detection AI",
-    description: "A deep learning-based facial recognition system for criminal identity detection. Uses CNN architecture with OpenCV for real-time face matching against a criminal database. Currently in active development — slot reserved for upcoming release.",
-    tags: ["Python", "OpenCV", "Deep Learning", "CNN", "Face Recognition"],
+    description: "An advanced AI-based platform for real-time criminal face detection, monitoring, and secure user management. Built for law enforcement and smart surveillance operations.",
+    tags: ["Java", "Spring Boot", "MySQL", "OpenCV", "TensorFlow"],
+    github: "https://github.com/niharranjanbiswal22-source/criminal-face-detection",
+    demo: "https://criminal-face-detection-sand.vercel.app/login",
+    metric: "Live AI Surveillance",
+    type: "FACE_DETECTION_AI",
+    visual: (
+      <img src="/criminal_face_detection.jpg" alt="Criminal Face Detection AI screenshot" className="w-full h-full object-cover object-top opacity-80 group-hover:scale-105 transition-transform duration-500" />
+    )
+  },
+  {
+    id: 9,
+    title: "Cheating Detector AI (Exam Leak)",
+    description: "An advanced AI-driven system designed to monitor and detect cheating during online examinations. Utilizes computer vision and pattern recognition to ensure academic integrity. Currently in active development — slot reserved for upcoming release.",
+    tags: ["Python", "Computer Vision", "Machine Learning", "Pattern Recognition", "AI Monitor"],
     github: "https://github.com/niharranjanbiswal22-source",
     demo: "#",
-    metric: "Accuracy: ~91%",
-    type: "FACE_DETECTION_AI",
+    metric: "Status: In Development",
+    type: "EXAM_LEAK_AI",
     visual: (
       <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-red-900/20 via-black to-orange-900/10 relative overflow-hidden">
         {/* Animated scan lines */}
@@ -122,9 +135,9 @@ const projects = [
         </div>
         <div className="text-center space-y-1">
           <p className="text-red-400 text-[10px] font-bold font-mono uppercase tracking-widest animate-pulse">⚠ COMING SOON</p>
-          <p className="text-gray-500 text-[9px] font-mono">CNN · OpenCV · Face Match Engine</p>
+          <p className="text-gray-500 text-[9px] font-mono">VISION · PATTERN MATCHING</p>
         </div>
-        <div className="absolute bottom-3 right-4 text-[8px] font-mono text-red-500/50 tracking-widest">CRIMINAL_AI_v1.0</div>
+        <div className="absolute bottom-3 right-4 text-[8px] font-mono text-red-500/50 tracking-widest">CHEAT_DETECT_v1.0</div>
       </div>
     )
   }
