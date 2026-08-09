@@ -86,7 +86,7 @@ const projects = [
     description: "A premium personal developer portfolio built with React.js, Framer Motion, and Vite. Features AI assistant, female voice auto-tour, interactive tech stack, animated certifications, and a recruiter premium vault with Stripe payment integration.",
     tags: ["React.js", "Framer Motion", "Vite", "Tailwind CSS", "AI Integration"],
     github: "https://github.com/niharranjanbiswal22-source",
-    demo: "https://niharbiswal.tiiny.site/",
+    demo: "https://niharbiswal.vercel.app/",
     metric: "Live Portfolio",
     type: "PORTFOLIO_v3.0",
     visual: (
