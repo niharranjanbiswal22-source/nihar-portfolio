@@ -108,6 +108,19 @@ const projects = [
   },
   {
     id: 9,
+    title: "OmniVoice AI – Multimodal Voice Assistant",
+    description: "Built an end-to-end voice-first AI assistant integrating real-time Faster-Whisper STT, Silero VAD, custom NLP intent classification, FAISS RAG vector search, and Ollama local LLMs (Qwen2.5) with Kokoro TTS.",
+    tags: ["Python", "FastAPI", "React 18", "RAG / FAISS", "Local LLMs"],
+    github: "https://github.com/niharranjanbiswal22-source/OMNIVOICE-AI",
+    demo: "https://omnivoice-ai-sigma.vercel.app/",
+    metric: "Sub-second Streaming",
+    type: "VOICE_AI_v1.0",
+    visual: (
+      <img src="/omnivoice_ai.png" alt="OmniVoice AI screenshot" className="w-full h-full object-cover object-top opacity-80 group-hover:scale-105 transition-transform duration-500" />
+    )
+  },
+  {
+    id: 10,
     title: "Cheating Detector AI (Exam Leak)",
     description: "An advanced AI-driven system designed to monitor and detect cheating during online examinations. Utilizes computer vision and pattern recognition to ensure academic integrity. Currently in active development — slot reserved for upcoming release.",
     tags: ["Python", "Computer Vision", "Machine Learning", "Pattern Recognition", "AI Monitor"],
