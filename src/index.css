@@ -150,6 +150,27 @@
   animation: logoGlow 3s ease-in-out infinite;
 }
 
+/* Continuous Infinite Marquee Animation for AI & Tech Logos */
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-scroll:hover {
+  animation-play-state: paused;
+}
+
 /* Light Theme Variables and Overrides */
 :root {
   --cyber-bg-light: #f8fafc;

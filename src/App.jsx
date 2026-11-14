@@ -5,6 +5,7 @@ import BackgroundGrid from './components/BackgroundGrid';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Services from './components/Services';
 import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
@@ -12,6 +13,7 @@ import Strengths from './components/Strengths';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PaymentGateway from './components/PaymentGateway';
+import DigitalStore from './components/DigitalStore';
 import AIAssistant from './components/AIAssistant';
 import TimezonePanel from './components/TimezonePanel';
 import Education from './components/Education';
@@ -23,6 +25,7 @@ import AudioController from './components/AudioController';
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [theme, setTheme] = useState('cyan'); // 'cyan' | 'magenta'
   const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -92,6 +95,8 @@ export default function App() {
             isLightMode={isLightMode}
             onToggleLightMode={toggleLightMode}
             onToggleChat={() => setIsChatOpen(prev => !prev)}
+            onOpenPayment={() => { setSelectedProduct(null); setIsCheckoutOpen(true); }}
+            onBuyProduct={(product) => { setSelectedProduct(product); setIsCheckoutOpen(true); }}
           />
 
           {/* Main Sections */}
@@ -99,6 +104,7 @@ export default function App() {
             <Hero onHireMeClick={handleScrollToContact} />
             <TimezonePanel />
             <About />
+            <Services onSelectService={handleScrollToContact} />
             <Skills />
             <Experience />
             <Education />
@@ -107,7 +113,12 @@ export default function App() {
             {/* Projects with premium lock features */}
             <Projects 
               isPremiumUnlocked={isPremiumUnlocked} 
-              onOpenUnlock={() => setIsCheckoutOpen(true)} 
+              onOpenUnlock={() => { setSelectedProduct(null); setIsCheckoutOpen(true); }} 
+            />
+
+            {/* Digital Store & Products Vault (Notes, Source Codes, Deployments) */}
+            <DigitalStore 
+              onBuyProduct={(product) => { setSelectedProduct(product); setIsCheckoutOpen(true); }} 
             />
             
             <TravelGallery />
@@ -125,8 +136,9 @@ export default function App() {
           {/* Secure Payment gateway checkout */}
           <PaymentGateway 
             isOpen={isCheckoutOpen} 
-            onClose={() => setIsCheckoutOpen(false)} 
+            onClose={() => { setIsCheckoutOpen(false); setSelectedProduct(null); }} 
             onUnlockSuccess={handleUnlockPremium}
+            productToBuy={selectedProduct}
           />
 
           {/* Floating AI Agent Assistant */}
