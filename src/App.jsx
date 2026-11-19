@@ -30,22 +30,14 @@ export default function App() {
   const [theme, setTheme] = useState('cyan'); // 'cyan' | 'magenta'
   const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isLightMode, setIsLightMode] = useState(() => {
-    try {
-      const saved = localStorage.getItem('mode');
-      if (saved === 'dark') return false;
-      return true; // Default to white/light theme first
-    } catch {
-      return true;
-    }
-  });
+  const [isLightMode, setIsLightMode] = useState(true); // Default to white/light theme always on load
 
   // Apply theme attribute to html tag
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Apply light/dark mode
+  // Apply light/dark mode - Default always White Theme on load
   useEffect(() => {
     if (isLightMode) {
       document.documentElement.classList.add('light');
@@ -88,7 +80,7 @@ export default function App() {
 
       {/* Main Portfolio Page */}
       {!isLoading && (
-        <div className="relative min-h-screen text-gray-100 flex flex-col justify-between selection:bg-cyber-cyan/30 selection:text-white">
+        <div className="relative min-h-screen text-slate-900 dark:text-gray-100 flex flex-col justify-between selection:bg-cyber-cyan/30 selection:text-white">
           
           {/* Canvas Background particles */}
           <BackgroundGrid />

@@ -3,11 +3,10 @@
   <head>
     <script>
       try {
-        if (localStorage.getItem('mode') === 'dark') {
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-        }
+        // Enforce White / Light theme by default on initial page load
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('mode', 'light');
       } catch (e) {}
     </script>
     <meta charset="UTF-8" />
