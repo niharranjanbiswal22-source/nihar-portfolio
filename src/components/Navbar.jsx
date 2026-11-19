@@ -4,25 +4,25 @@ import {
   Menu, X, Cpu, Sun, Moon, ChevronDown, Smartphone, Globe, 
   Palette, TrendingUp, Layers, Box, Target, Users, Code2, ArrowRight,
   FolderGit2, Briefcase, ShoppingBag, Zap, BookOpen, FileText, Brain, 
-  Cloud, Play, ShieldCheck, Download
+  Cloud, Play, ShieldCheck, Download, Gamepad2
 } from 'lucide-react';
 import { productCategories } from '../data/productsData';
 
 const serviceColumns = [
   // Left Column (5 items)
   [
-    { name: 'MOBILE APP DEVELOPMENT', id: 'mobile-app', icon: Smartphone },
-    { name: 'LOGO & BRAND IDENTITY', id: 'brand-identity', icon: Palette },
-    { name: 'UI/UX & GRAPHIC DESIGN', id: 'ui-ux-design', icon: Layers },
-    { name: 'MARKETING STRATEGY', id: 'marketing-strategy', icon: Target },
-    { name: 'SOFTWARE DEVELOPMENT', id: 'software-dev', icon: Code2 },
+    { name: 'MOBILE APP DEVELOPMENT', id: 'mobile-app', iconImg: '/service-icons/mobile_app.svg' },
+    { name: 'LOGO & BRAND IDENTITY', id: 'brand-identity', iconImg: '/service-icons/canva.svg' },
+    { name: 'UI/UX & GRAPHIC DESIGN', id: 'ui-ux-design', iconImg: '/service-icons/figma.svg' },
+    { name: 'MARKETING STRATEGY', id: 'marketing-strategy', iconImg: '/service-icons/google_ads.svg' },
+    { name: 'SOFTWARE DEVELOPMENT', id: 'software-dev', iconImg: '/service-icons/vscode.svg' },
   ],
   // Right Column (4 items)
   [
-    { name: 'WEBSITE DESIGN', id: 'website-design', icon: Globe },
-    { name: 'DIGITAL MARKETING', id: 'digital-marketing', icon: TrendingUp },
-    { name: '3D DESIGN & ELEVATION', id: '3d-design', icon: Box },
-    { name: 'PR & POLITICAL MANAGEMENT', id: 'pr-political', icon: Users },
+    { name: 'WEBSITE DESIGN', id: 'website-design', iconImg: '/service-icons/web_design.svg' },
+    { name: 'DIGITAL MARKETING', id: 'digital-marketing', iconImg: '/service-icons/google_analytics.svg' },
+    { name: '3D DESIGN & ELEVATION', id: '3d-design', iconImg: '/service-icons/blender.svg' },
+    { name: 'PR & POLITICAL MANAGEMENT', id: 'pr-political', iconImg: '/service-icons/pr_management.svg' },
   ]
 ];
 
@@ -32,7 +32,7 @@ const navItems = [
   { name: 'Home', href: '#home', id: 'home' },
   { name: 'About', href: '#about', id: 'about' },
   { name: 'Services', href: '#services', id: 'services', isServicesDropdown: true },
-  { name: 'Skills', href: '#skills', id: 'skills' },
+  { name: 'Skills', href: '#skills', id: 'skills', isSkillsDropdown: true },
   { name: 'Experience', href: '#experience', id: 'experience', isExperienceDropdown: true },
   { name: 'Premium Payment', href: '#digital-store', id: 'digital-store', isStoreDropdown: true },
   { name: 'AI Assistant', href: '#chatbot', id: 'chatbot', chatbot: true },
@@ -52,16 +52,20 @@ export default function Navbar({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSkillsOpen, setMobileSkillsOpen] = useState(false);
   const [mobileExperienceOpen, setMobileExperienceOpen] = useState(false);
   const [mobileStoreOpen, setMobileStoreOpen] = useState(false);
   
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [skillsDropdownOpen, setSkillsDropdownOpen] = useState(false);
   const [experienceDropdownOpen, setExperienceDropdownOpen] = useState(false);
   const [storeDropdownOpen, setStoreDropdownOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   
   const servicesDropdownRef = useRef(null);
   const servicesTimeoutRef = useRef(null);
+  const skillsDropdownRef = useRef(null);
+  const skillsTimeoutRef = useRef(null);
   const experienceDropdownRef = useRef(null);
   const experienceTimeoutRef = useRef(null);
   const storeDropdownRef = useRef(null);
@@ -82,7 +86,7 @@ export default function Navbar({
       }
 
       // Active Section Highlight
-      const sections = ['home', 'about', 'services', 'skills', 'experience', 'projects', 'digital-store', 'contact'];
+      const sections = ['home', 'about', 'services', 'skills', 'game-arena', 'experience', 'projects', 'digital-store', 'contact'];
       let currentSection = 'home';
       if (window.scrollY < 100) {
         currentSection = 'home';
@@ -111,6 +115,9 @@ export default function Navbar({
       if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(e.target)) {
         setServicesDropdownOpen(false);
       }
+      if (skillsDropdownRef.current && !skillsDropdownRef.current.contains(e.target)) {
+        setSkillsDropdownOpen(false);
+      }
       if (experienceDropdownRef.current && !experienceDropdownRef.current.contains(e.target)) {
         setExperienceDropdownOpen(false);
       }
@@ -130,6 +137,17 @@ export default function Navbar({
   const handleServicesMouseLeave = () => {
     servicesTimeoutRef.current = setTimeout(() => {
       setServicesDropdownOpen(false);
+    }, 200);
+  };
+
+  // Skills mouse handlers
+  const handleSkillsMouseEnter = () => {
+    if (skillsTimeoutRef.current) clearTimeout(skillsTimeoutRef.current);
+    setSkillsDropdownOpen(true);
+  };
+  const handleSkillsMouseLeave = () => {
+    skillsTimeoutRef.current = setTimeout(() => {
+      setSkillsDropdownOpen(false);
     }, 200);
   };
 
@@ -291,54 +309,48 @@ export default function Navbar({
                             <div className="grid grid-cols-2 gap-3">
                               {/* Left Column (5 services) */}
                               <div className="space-y-1">
-                                {serviceColumns[0].map((srv) => {
-                                  const Icon = srv.icon;
-                                  return (
-                                    <a
-                                      key={srv.id}
-                                      href={`#service-${srv.id}`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        setServicesDropdownOpen(false);
-                                        scrollToService(srv.id);
-                                      }}
-                                      className="group flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-500/10 border border-transparent hover:border-amber-500/25 transition-all duration-200 cursor-pointer"
-                                    >
-                                      <div className="h-7 w-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-amber-400 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-black transition-all shrink-0">
-                                        <Icon className="h-3.5 w-3.5" />
-                                      </div>
-                                      <span className="text-[11px] font-black tracking-wide text-gray-200 group-hover:text-amber-300 uppercase transition-colors">
-                                        {srv.name}
-                                      </span>
-                                    </a>
-                                  );
-                                })}
+                                {serviceColumns[0].map((srv) => (
+                                  <a
+                                    key={srv.id}
+                                    href={`#service-${srv.id}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setServicesDropdownOpen(false);
+                                      scrollToService(srv.id);
+                                    }}
+                                    className="group flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-500/10 border border-transparent hover:border-amber-500/25 transition-all duration-200 cursor-pointer"
+                                  >
+                                    <div className="h-8 w-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center p-1.5 shadow-sm group-hover:scale-110 group-hover:border-amber-400/60 transition-all shrink-0">
+                                      <img src={srv.iconImg} alt={srv.name} className="h-full w-full object-contain" />
+                                    </div>
+                                    <span className="text-[11px] font-black tracking-wide text-slate-800 dark:text-gray-200 group-hover:text-amber-500 dark:group-hover:text-amber-300 uppercase transition-colors">
+                                      {srv.name}
+                                    </span>
+                                  </a>
+                                ))}
                               </div>
 
                               {/* Right Column (4 services) */}
                               <div className="space-y-1">
-                                {serviceColumns[1].map((srv) => {
-                                  const Icon = srv.icon;
-                                  return (
-                                    <a
-                                      key={srv.id}
-                                      href={`#service-${srv.id}`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        setServicesDropdownOpen(false);
-                                        scrollToService(srv.id);
-                                      }}
-                                      className="group flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-500/10 border border-transparent hover:border-amber-500/25 transition-all duration-200 cursor-pointer"
-                                    >
-                                      <div className="h-7 w-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-amber-400 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-black transition-all shrink-0">
-                                        <Icon className="h-3.5 w-3.5" />
-                                      </div>
-                                      <span className="text-[11px] font-black tracking-wide text-gray-200 group-hover:text-amber-300 uppercase transition-colors">
-                                        {srv.name}
-                                      </span>
-                                    </a>
-                                  );
-                                })}
+                                {serviceColumns[1].map((srv) => (
+                                  <a
+                                    key={srv.id}
+                                    href={`#service-${srv.id}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setServicesDropdownOpen(false);
+                                      scrollToService(srv.id);
+                                    }}
+                                    className="group flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-500/10 border border-transparent hover:border-amber-500/25 transition-all duration-200 cursor-pointer"
+                                  >
+                                    <div className="h-8 w-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center p-1.5 shadow-sm group-hover:scale-110 group-hover:border-amber-400/60 transition-all shrink-0">
+                                      <img src={srv.iconImg} alt={srv.name} className="h-full w-full object-contain" />
+                                    </div>
+                                    <span className="text-[11px] font-black tracking-wide text-slate-800 dark:text-gray-200 group-hover:text-amber-500 dark:group-hover:text-amber-300 uppercase transition-colors">
+                                      {srv.name}
+                                    </span>
+                                  </a>
+                                ))}
                               </div>
                             </div>
 
@@ -356,6 +368,110 @@ export default function Navbar({
                                 <ArrowRight className="h-3.5 w-3.5" />
                               </button>
                             </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
+
+                // Skills Dropdown (2 Options: 1. Tech Skills, 2. Game Arena / Play Games)
+                if (item.isSkillsDropdown) {
+                  return (
+                    <li 
+                      key="skills-dropdown" 
+                      ref={skillsDropdownRef}
+                      className="relative"
+                      onMouseEnter={handleSkillsMouseEnter}
+                      onMouseLeave={handleSkillsMouseLeave}
+                    >
+                      <button
+                        onClick={() => {
+                          setSkillsDropdownOpen(prev => !prev);
+                          setActiveSection('skills');
+                          scrollToSection('#skills');
+                        }}
+                        className={`text-[13px] flex items-center gap-1 cursor-pointer transition-all duration-200 ${
+                          skillsDropdownOpen || activeSection === 'skills' || activeSection === 'game-arena'
+                            ? 'bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-full shadow-[0_0_12px_rgba(245,158,11,0.4)]'
+                            : 'text-gray-300 hover:text-white font-medium px-2.5 py-1 rounded-full hover:bg-white/5'
+                        }`}
+                      >
+                        <span>Skills</span>
+                        <ChevronDown 
+                          className={`h-3 w-3 transition-transform duration-200 ${skillsDropdownOpen ? 'rotate-180' : ''}`} 
+                        />
+                      </button>
+
+                      {/* Skills & Games Dropdown Menu */}
+                      <AnimatePresence>
+                        {skillsDropdownOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 rounded-2xl bg-slate-950/95 border border-white/15 p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(59,130,246,0.2)] backdrop-blur-2xl z-50 text-left space-y-2"
+                          >
+                            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 rounded-t-2xl" />
+
+                            {/* Option 1: Technical Skills */}
+                            <a
+                              href="#skills"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setSkillsDropdownOpen(false);
+                                setActiveSection('skills');
+                                scrollToSection('#skills');
+                              }}
+                              className="group flex items-start gap-3 p-3 rounded-xl hover:bg-blue-500/10 border border-transparent hover:border-blue-500/30 transition-all duration-200 cursor-pointer"
+                            >
+                              <div className="h-10 w-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center p-1.5 shadow-sm group-hover:scale-110 group-hover:border-blue-500/50 transition-all shrink-0 mt-0.5">
+                                <img src="/games/google_developers.svg" alt="Google Developers" className="h-full w-full object-contain" />
+                              </div>
+                              <div className="flex-grow space-y-0.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-black tracking-wide text-white group-hover:text-blue-400 uppercase transition-colors">
+                                    Technical Skills
+                                  </span>
+                                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold">
+                                    Stack
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-gray-400 group-hover:text-gray-300 leading-snug">
+                                  Languages, Frameworks, Cloud, Databases & AI Tooling
+                                </p>
+                              </div>
+                            </a>
+
+                            {/* Option 2: Game Arena (Play Games) */}
+                            <a
+                              href="#game-arena"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setSkillsDropdownOpen(false);
+                                setActiveSection('game-arena');
+                                scrollToSection('#game-arena');
+                              }}
+                              className="group flex items-start gap-3 p-3 rounded-xl hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/30 transition-all duration-200 cursor-pointer"
+                            >
+                              <div className="h-10 w-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm group-hover:scale-110 group-hover:border-emerald-500/50 transition-all shrink-0 mt-0.5">
+                                <img src="/games/google_play_games.png" alt="Google Play Games" className="h-full w-full object-contain rounded-lg" />
+                              </div>
+                              <div className="flex-grow space-y-0.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-black tracking-wide text-white group-hover:text-emerald-400 uppercase transition-colors">
+                                    Game Arena (Play Games)
+                                  </span>
+                                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+                                    6 Games
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-gray-400 group-hover:text-gray-300 leading-snug">
+                                  Angry Birds, Snake, Archery, Quiz, Racing & Dr. Driving
+                                </p>
+                              </div>
+                            </a>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -789,12 +905,65 @@ export default function Navbar({
                                   setMobileMenuOpen(false);
                                   scrollToService(srv.id);
                                 }}
-                                className="w-full text-left py-1.5 px-3 rounded-lg text-xs font-bold text-gray-300 hover:text-amber-400 hover:bg-white/5 transition-colors flex items-center gap-2"
+                                className="w-full text-left py-2 px-3 rounded-lg text-xs font-bold text-gray-300 hover:text-amber-400 hover:bg-white/5 transition-colors flex items-center gap-2.5"
                               >
-                                <srv.icon className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                                <div className="h-5 w-5 rounded bg-white dark:bg-slate-900 p-0.5 shrink-0 flex items-center justify-center">
+                                  <img src={srv.iconImg} alt={srv.name} className="h-full w-full object-contain" />
+                                </div>
                                 <span>{srv.name}</span>
                               </button>
                             ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
+
+                // Mobile Skills Dropdown
+                if (item.isSkillsDropdown) {
+                  return (
+                    <li key="mobile-skills" className="space-y-1.5">
+                      <button
+                        onClick={() => setMobileSkillsOpen(prev => !prev)}
+                        className="w-full flex items-center justify-between py-2 text-blue-400 font-extrabold uppercase tracking-wide border-b border-white/10"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+                          SKILLS & GAMES (2)
+                        </span>
+                        <ChevronDown className={`h-4 w-4 transition-transform ${mobileSkillsOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      <AnimatePresence>
+                        {mobileSkillsOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="pl-2 space-y-1 overflow-hidden pt-1"
+                          >
+                            <button
+                              onClick={() => {
+                                setMobileMenuOpen(false);
+                                scrollToSection('#skills');
+                              }}
+                              className="w-full text-left py-2 px-3 rounded-xl text-xs font-bold text-gray-300 hover:text-blue-400 hover:bg-white/5 transition-colors flex items-center gap-2.5"
+                            >
+                              <img src="/games/google_developers.svg" alt="Google Developers" className="h-5 w-5 object-contain shrink-0" />
+                              <span>Tech Skills & Stack</span>
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setMobileMenuOpen(false);
+                                scrollToSection('#game-arena');
+                              }}
+                              className="w-full text-left py-2 px-3 rounded-xl text-xs font-bold text-gray-300 hover:text-emerald-400 hover:bg-white/5 transition-colors flex items-center gap-2.5"
+                            >
+                              <img src="/games/google_play_games.png" alt="Google Play Games" className="h-5 w-5 object-contain rounded shrink-0" />
+                              <span>Play Games (6 Arcade Games)</span>
+                            </button>
                           </motion.div>
                         )}
                       </AnimatePresence>

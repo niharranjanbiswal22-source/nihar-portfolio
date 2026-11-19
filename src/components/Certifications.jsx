@@ -148,22 +148,20 @@ export default function Certifications() {
                 {cert.image ? (
                   <div 
                     onClick={() => setActiveCert(cert)}
-                    className="h-44 w-full bg-black/40 border-b border-white/10 relative overflow-hidden cursor-pointer group/image"
+                    className="h-44 w-full bg-slate-900/40 relative overflow-hidden cursor-pointer group/image"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-cyber-bg/95 to-transparent z-10 opacity-70 group-hover/image:opacity-40 transition-opacity" />
                     <img 
                       src={cert.image} 
                       alt={cert.title} 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105"
                     />
-                    <div className="absolute top-3 right-3 text-[9px] font-bold text-cyber-cyan bg-black/75 border border-white/15 px-2 py-0.5 rounded uppercase z-20 font-mono">
+                    <div className="absolute top-3 right-3 text-[9px] font-bold text-cyber-cyan bg-black/80 border border-white/20 px-2.5 py-1 rounded-md uppercase z-20 font-mono shadow-md backdrop-blur-sm">
                       Click to View
                     </div>
                   </div>
                 ) : (
-                  <div className="h-44 w-full bg-black/50 border-b border-white/10 relative flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-t from-cyber-bg to-transparent opacity-40" />
-                    <Award className={`h-12 w-12 text-gray-500 animate-pulse`} />
+                  <div className="h-44 w-full bg-slate-900/50 relative flex items-center justify-center">
+                    <Award className="h-12 w-12 text-gray-400 dark:text-gray-500 animate-pulse" />
                   </div>
                 )}
 

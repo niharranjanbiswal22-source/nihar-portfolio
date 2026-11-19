@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, Mic, MicOff, Play, Pause, SkipForward } from 'lucide-react';
+import { Volume2, VolumeX, Mic, MicOff, Play, Pause, SkipForward, Download, X, Laptop, Smartphone, ExternalLink, Check, Sparkles } from 'lucide-react';
 
 // ── Sections for auto-scroll tour ─────────────────────────────────────────
 const TOUR_SECTIONS = [
@@ -14,24 +14,24 @@ const TOUR_SECTIONS = [
   { id: 'contact',       label: 'Contact'      }
 ];
 
-// ── Full narration script, optimised for a female voice ───────────────────
+// ── Full narration script, optimised for a natural human female voice ─────
 const NARRATION_SCRIPT = [
   // Hero
-  "Welcome! I'm Nihar's AI voice assistant. Let me take you on a personal tour of his portfolio.",
+  "Welcome! I am Nihar's voice assistant. Let me take you on a personal walk-through of his portfolio.",
   // About
-  "Nihar Ranjan Biswal is a passionate MCA graduate and Full Stack Developer from Bhubaneswar, Odisha, India. He blends strong backend engineering with a clean eye for front-end design.",
+  "Nihar Ranjan Biswal is a passionate MCA graduate and Full Stack Developer based in Bhubaneswar, Odisha, India. He combines strong backend engineering with clean, modern front-end design.",
   // Skills
-  "His core tech stack includes React dot js, Next dot js, Node dot js, Express, MongoDB, Java, Python, and SQL — with hands-on experience in machine learning using Pandas, NumPy, and Scikit-Learn.",
+  "His core tech stack includes React JS, Next JS, Node JS, Express, MongoDB, Java, Python, and SQL, with hands-on machine learning experience using Pandas, NumPy, and Scikit-Learn.",
   // Experience
-  "Nihar gained professional Full Stack development experience at NIELIT — the National Institute of Electronics and Information Technology — building real production applications. He also developed strong communication skills at Reliance Retail.",
+  "Nihar gained hands-on software development experience at NIELIT, the National Institute of Electronics and Information Technology, building real-world production web systems. He also honed his client communication skills at Reliance Retail.",
   // Projects
-  "His portfolio includes over fifteen projects — from an AI-powered IPL Match Predictor, to a Pharma CRM system, an AI Image Generator, a Code Compiler, and a real-time Disease Detection model. Please explore the project cards for live demos.",
+  "His portfolio features over 50 core projects, including an AI-powered IPL Match Predictor, a Pharma CRM system, an AI Image Generator, a Code Compiler, and an AI Disease Detection model. Feel free to explore the interactive live demos below.",
   // Education
   "He holds a Master of Computer Applications degree from Maharaja Sriram Chandra Bhanja Deo University, and a Bachelor of Science in Physics from Utkal University.",
   // Certifications
-  "Nihar has earned multiple certifications — including Google Analytics, Oracle Cloud Foundations, Full Stack Development from NIELIT, a First Place award at the Odisha AI Symposium 2025, and a First Prize at the University Level Innovation and Startup Competition.",
+  "Nihar has earned multiple technical certifications, including Google Analytics, Oracle Cloud Infrastructure, Full Stack Development from NIELIT, and top awards at the Odisha AI Symposium and University Startup competitions.",
   // Contact
-  "Thank you for visiting Nihar's portfolio! He is actively seeking Full Stack Developer, Software Engineer, or Data Analyst roles. Feel free to connect with him on LinkedIn, GitHub, or via the contact section. He is flexible with timezones and ready to join your team!"
+  "Thank you for exploring Nihar's portfolio! He is actively available for Full Stack Developer, Software Engineer, and Data roles. Feel free to connect with him on LinkedIn, GitHub, or through the contact section below. Have a wonderful day!"
 ];
 
 export default function AudioController() {
@@ -42,6 +42,10 @@ export default function AudioController() {
   const [transcript, setTranscript]     = useState('');
   const [voicesLoaded, setVoicesLoaded] = useState(false);
   const [currentLabel, setCurrentLabel] = useState('');
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstalled, setIsInstalled]   = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
+  const [downloadedShortcut, setDownloadedShortcut] = useState(false);
 
   const audioCtxRef       = useRef(null);
   const synthIntervalRef  = useRef(null);
@@ -59,30 +63,169 @@ export default function AudioController() {
     return () => window.speechSynthesis.removeEventListener('voiceschanged', load);
   }, []);
 
-  // ── Pick the best female English voice ────────────────────────────────
+  // ── PWA Install Prompt Listener ─────────────────────────────────────────
+  useEffect(() => {
+    // Check if already running as standalone app
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      setIsInstalled(true);
+    }
+
+    if (window.deferredInstallPrompt) {
+      setInstallPrompt(window.deferredInstallPrompt);
+    }
+
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      window.deferredInstallPrompt = e;
+      setInstallPrompt(e);
+    };
+
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setInstallPrompt(null);
+      window.deferredInstallPrompt = null;
+    };
+
+    const handlePwaReady = () => {
+      if (window.deferredInstallPrompt) {
+        setInstallPrompt(window.deferredInstallPrompt);
+      }
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener('pwa-ready', handlePwaReady);
+    window.addEventListener('pwa-installed', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener('pwa-ready', handlePwaReady);
+      window.removeEventListener('pwa-installed', handleAppInstalled);
+    };
+  }, []);
+
+  // 1-Click Desktop App Shortcut Download (.url file)
+  const handleDownloadShortcut = () => {
+    const origin = window.location.origin || 'https://niharbiswal.tiiny.site';
+    const content = `[InternetShortcut]\nURL=${origin}\nIconIndex=0\nIconFile=${origin}/favicon.svg\nHotKey=0\n`;
+    const blob = new Blob([content], { type: 'application/octet-stream' });
+    const dlUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = dlUrl;
+    link.download = 'Nihar_Portfolio_App.url';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(dlUrl);
+    setDownloadedShortcut(true);
+    setTimeout(() => setDownloadedShortcut(false), 4000);
+  };
+
+  // Open in standalone borderless window
+  const handleOpenAppWindow = () => {
+    window.open(window.location.origin, 'NiharPortfolioApp', 'popup=yes,width=1280,height=800,menubar=no,toolbar=no,location=no,status=no');
+  };
+
+  const handleInstallClick = async () => {
+    const promptEvent = installPrompt || window.deferredInstallPrompt;
+    if (promptEvent) {
+      try {
+        promptEvent.prompt();
+        const { outcome } = await promptEvent.userChoice;
+        if (outcome === 'accepted') {
+          setIsInstalled(true);
+          setInstallPrompt(null);
+          window.deferredInstallPrompt = null;
+          setShowInstallModal(false);
+          return;
+        }
+      } catch (err) {
+        console.warn('Install prompt error:', err);
+      }
+    }
+    // If native prompt is not directly available or dismissed, open the interactive modal
+    setShowInstallModal(true);
+  };
+
+  // ── Pick the best realistic natural human female voice ────────────────
   const getFemaleVoice = () => {
     if (!window.speechSynthesis) return null;
     const voices = window.speechSynthesis.getVoices();
-    // Prefer high-quality female voices by name (works on Chrome / Edge / Windows)
-    const preferred = [
-      'Microsoft Zira',     // Windows — clear, pleasant female
-      'Microsoft Aria',     // Edge Canary / Windows 11
+    if (!voices || voices.length === 0) return null;
+
+    // Filter out robotic legacy desktop voices (Zira Desktop is notoriously robotic)
+    const isRoboticOrMale = (v) => {
+      const name = v.name.toLowerCase();
+      return (
+        name.includes('zira') ||
+        name.includes('desktop') ||
+        name.includes('male') ||
+        name.includes('guy') ||
+        name.includes('david') ||
+        name.includes('george') ||
+        name.includes('mark') ||
+        name.includes('richard') ||
+        name.includes('james') ||
+        name.includes('stefan') ||
+        name.includes('ravi')
+      );
+    };
+
+    // 1. Ultra-Realistic Neural / Natural Online Female Voices (Microsoft Edge, Windows 11, Google Chrome, macOS)
+    const naturalHumanVoices = [
+      'Microsoft Jenny Online (Natural)',
+      'Microsoft Aria Online (Natural)',
+      'Microsoft Ava Online (Natural)',
+      'Microsoft Emma Online (Natural)',
+      'Microsoft Sonia Online (Natural)',
+      'Microsoft Libby Online (Natural)',
+      'Microsoft Michelle Online (Natural)',
       'Google UK English Female',
-      'Google US English',  // often female on Android/Chrome
-      'Samantha',           // macOS
-      'Karen',              // macOS/iOS AU
-      'Moira',              // macOS
+      'Google US English',
+      'Ava (Premium)',
+      'Ava (Enhanced)',
+      'Samantha (Enhanced)',
+      'Serena (Premium)',
+      'Karen (Enhanced)',
+      'Zoe (Premium)',
+      'Victoria',
+      'Samantha',
+      'Microsoft Aria',
+      'Microsoft Jenny',
+      'en-US-Neural2-F'
     ];
-    for (const name of preferred) {
-      const v = voices.find(v => v.name.includes(name));
-      if (v) return v;
+
+    for (const name of naturalHumanVoices) {
+      const match = voices.find(v => v.name.toLowerCase().includes(name.toLowerCase()));
+      if (match) return match;
     }
-    // Fallback: any English female-sounding voice
-    const femaleKws = ['female', 'woman', 'girl', 'zira', 'aria', 'siri', 'samantha', 'karen'];
-    const fb = voices.find(v => femaleKws.some(k => v.name.toLowerCase().includes(k)) && v.lang.startsWith('en'));
-    if (fb) return fb;
-    // Last resort: first English voice
-    return voices.find(v => v.lang.startsWith('en')) || null;
+
+    // 2. Any English voice that has "Natural" or "Neural" or "Premium" and is female
+    const neuralFemale = voices.find(v => 
+      v.lang.startsWith('en') && 
+      (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Enhanced') || v.name.includes('Premium')) &&
+      !isRoboticOrMale(v)
+    );
+    if (neuralFemale) return neuralFemale;
+
+    // 3. Modern Chrome/Edge/OS standard English female voices
+    const femaleKeywords = ['female', 'woman', 'aria', 'jenny', 'samantha', 'karen', 'victoria', 'serena', 'ava', 'zoe', 'anna'];
+    const standardFemale = voices.find(v => 
+      v.lang.startsWith('en') && 
+      femaleKeywords.some(k => v.name.toLowerCase().includes(k)) &&
+      !isRoboticOrMale(v)
+    );
+    if (standardFemale) return standardFemale;
+
+    // 4. Any English voice that is not robotic or male
+    const anyFemaleEnglish = voices.find(v => 
+      v.lang.startsWith('en') && !isRoboticOrMale(v)
+    );
+    if (anyFemaleEnglish) return anyFemaleEnglish;
+
+    // 5. Last resort fallback
+    return voices.find(v => v.lang.startsWith('en')) || voices[0] || null;
   };
 
   // ── Speak a single segment, then scroll to the next section ───────────
@@ -110,8 +253,8 @@ export default function AudioController() {
       if (!isTourRunningRef.current) return;
 
       const utterance = new SpeechSynthesisUtterance(NARRATION_SCRIPT[index]);
-      utterance.rate   = 0.92;   // slightly slower — clear & professional
-      utterance.pitch  = 1.08;   // slightly higher — female warmth
+      utterance.rate   = 0.94;   // Warm, natural conversational pacing
+      utterance.pitch  = 1.04;   // Natural human female pitch inflection
       utterance.volume = 1.0;
 
       const voice = getFemaleVoice();
@@ -293,6 +436,22 @@ export default function AudioController() {
         )}
       </AnimatePresence>
 
+      {/* Install Portfolio PWA Button */}
+      {!isInstalled && (
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={handleInstallClick}
+          title="Install this portfolio as an app on your device"
+          className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-700 text-white text-xs font-bold tracking-wide shadow-[0_4px_20px_rgba(37,99,235,0.45)] hover:shadow-[0_6px_28px_rgba(37,99,235,0.6)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center gap-2 border border-blue-400/20"
+        >
+          <Download className="h-4 w-4 text-white" />
+          <span>Install Portfolio</span>
+        </motion.button>
+      )}
+
       {/* Control Buttons */}
       <div className="glass-panel p-2 rounded-2xl border border-white/10 bg-cyber-card/85 flex items-center gap-1.5 shadow-2xl backdrop-blur-xl">
 
@@ -352,6 +511,120 @@ export default function AudioController() {
           {micActive ? <Mic className="h-4 w-4 animate-pulse" /> : <MicOff className="h-4 w-4" />}
         </button>
       </div>
+
+      {/* Interactive Install & Download Portfolio Modal */}
+      <AnimatePresence>
+        {showInstallModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={() => setShowInstallModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md rounded-3xl border border-blue-500/30 bg-slate-950 p-6 shadow-[0_0_50px_rgba(37,99,235,0.3)] text-left flex flex-col gap-4 overflow-hidden"
+            >
+              {/* Top ambient glow */}
+              <div className="absolute -top-16 -right-16 w-36 h-36 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Modal Header */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-2xl overflow-hidden border border-blue-500/40 shadow-lg p-0.5 bg-gradient-to-br from-blue-500 to-cyan-400 shrink-0">
+                    <img src="/icon-192.png" alt="Nihar Portfolio" className="h-full w-full object-cover rounded-[14px]" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-white flex items-center gap-1.5">
+                      <span>Install Portfolio App</span>
+                      <Sparkles className="h-3.5 w-3.5 text-blue-400" />
+                    </h3>
+                    <p className="text-xs text-gray-400">Nihar Ranjan Biswal • Standalone App</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowInstallModal(false)}
+                  className="h-8 w-8 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Option 1: 1-Click Desktop Shortcut Download (.url file) */}
+              <div className="rounded-2xl p-4 bg-blue-500/10 border border-blue-500/30 flex flex-col gap-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Laptop className="h-4 w-4 text-blue-400" />
+                    <span className="text-xs font-bold text-white">Direct Desktop App (Windows / PC)</span>
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold">1-Click</span>
+                </div>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  Download the direct desktop app shortcut file. Place it on your Desktop to launch Nihar's portfolio anytime in 1 click!
+                </p>
+                <button
+                  onClick={handleDownloadShortcut}
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold tracking-wide shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
+                >
+                  {downloadedShortcut ? (
+                    <>
+                      <Check className="h-4 w-4 text-emerald-400" />
+                      <span>Downloaded! Check Downloads Folder</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4 text-white" />
+                      <span>Download Desktop App (.url)</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Option 2: Browser Address Bar Installation Guide */}
+              <div className="rounded-2xl p-4 bg-white/5 border border-white/10 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-amber-400" />
+                  <span className="text-xs font-bold text-white">Browser Native Install (Chrome / Edge)</span>
+                </div>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  Click the <strong className="text-blue-400">Install icon (🖥️ or 📥)</strong> on the right side of your browser URL bar at the top, then click <strong>Install</strong>.
+                </p>
+                {(installPrompt || (typeof window !== 'undefined' && window.deferredInstallPrompt)) && (
+                  <button
+                    onClick={handleInstallClick}
+                    className="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold border border-white/10 flex items-center justify-center gap-2 cursor-pointer transition-all"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
+                    <span>Open Native Install Prompt</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Option 3: Mobile Devices (Android & iOS) */}
+              <div className="rounded-2xl p-3 bg-white/5 border border-white/5 flex items-start gap-2.5 text-gray-400 text-[11px]">
+                <Smartphone className="h-4 w-4 text-cyber-cyan shrink-0 mt-0.5" />
+                <div className="leading-relaxed">
+                  <strong className="text-gray-200">Mobile Phone:</strong> Tap <span className="text-white font-mono">⋮ (menu)</span> in Chrome and tap <span className="text-blue-300">"Add to Home screen"</span> or <span className="text-blue-300">"Install app"</span>. (iPhone: tap Safari Share → Add to Home Screen).
+                </div>
+              </div>
+
+              {/* Option 4: Open Standalone Window */}
+              <button
+                onClick={handleOpenAppWindow}
+                className="w-full py-2 rounded-xl bg-transparent hover:bg-white/5 text-gray-400 hover:text-white text-xs font-medium border border-white/5 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span>Launch in Clean Standalone Window</span>
+              </button>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

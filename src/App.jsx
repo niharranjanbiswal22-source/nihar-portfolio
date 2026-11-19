@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import About from './components/About';
 import Services from './components/Services';
 import Skills from './components/Skills';
+import GameArena from './components/GameArena';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Strengths from './components/Strengths';
@@ -31,9 +32,11 @@ export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(() => {
     try {
-      return localStorage.getItem('mode') === 'light';
+      const saved = localStorage.getItem('mode');
+      if (saved === 'dark') return false;
+      return true; // Default to white/light theme first
     } catch {
-      return false;
+      return true;
     }
   });
 
@@ -46,9 +49,11 @@ export default function App() {
   useEffect(() => {
     if (isLightMode) {
       document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
       try { localStorage.setItem('mode', 'light'); } catch {}
     } else {
       document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
       try { localStorage.setItem('mode', 'dark'); } catch {}
     }
   }, [isLightMode]);
@@ -106,6 +111,7 @@ export default function App() {
             <About />
             <Services onSelectService={handleScrollToContact} />
             <Skills />
+            <GameArena />
             <Experience />
             <Education />
             <Certifications />

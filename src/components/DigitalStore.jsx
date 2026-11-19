@@ -51,7 +51,7 @@ export default function DigitalStore({ onBuyProduct }) {
                 onClick={() => setActiveCategoryTab(cat.id)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
                   activeCategoryTab === cat.id
-                    ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-black shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105 font-black'
+                    ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-white shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105 font-black'
                     : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5'
                 }`}
               >
@@ -184,10 +184,10 @@ export default function DigitalStore({ onBuyProduct }) {
 
                         <button
                           onClick={() => onBuyProduct(prod)}
-                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs font-black uppercase tracking-wider shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-black uppercase tracking-wider shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
                         >
-                          <Zap className="h-3.5 w-3.5" />
-                          <span>Buy Now (₹{prod.price})</span>
+                          <Zap className="h-3.5 w-3.5 text-white" />
+                          <span className="text-white font-bold">Buy Now (₹{prod.price})</span>
                         </button>
                       </div>
 

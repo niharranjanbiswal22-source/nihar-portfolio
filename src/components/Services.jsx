@@ -376,7 +376,7 @@ export default function Services({ onSelectService }) {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
                   activeCategory === cat
-                    ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-black shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105 font-black'
+                    ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-white shadow-[0_0_15px_rgba(234,179,8,0.4)] scale-105 font-black'
                     : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5'
                 }`}
               >

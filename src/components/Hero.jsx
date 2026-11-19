@@ -12,7 +12,7 @@ const roles = [
 
 export default function Hero({ onHireMeClick }) {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
+  const [currentText, setCurrentText] = useState("Software Engineer");
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Hero({ onHireMeClick }) {
         setCurrentText(fullText.substring(0, currentText.length + 1));
         if (currentText === fullText) {
           // Pause at the end
-          timer = setTimeout(() => setIsDeleting(true), 1500);
+          timer = setTimeout(() => setIsDeleting(true), 2500);
           return;
         }
       } else {
@@ -44,7 +44,12 @@ export default function Hero({ onHireMeClick }) {
       timer = setTimeout(handleType, typeSpeed);
     };
 
-    timer = setTimeout(handleType, typeSpeed);
+    if (currentText === fullText && !isDeleting) {
+      timer = setTimeout(() => setIsDeleting(true), 2500);
+    } else {
+      timer = setTimeout(handleType, typeSpeed);
+    }
+
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, roleIndex]);
 
@@ -72,15 +77,15 @@ export default function Hero({ onHireMeClick }) {
           </h1>
 
           {/* Role Rotator */}
-          <div className="text-xl md:text-2xl font-mono text-gray-300 h-8 flex items-center">
-            <span className="text-cyber-violet select-none mr-2">&gt;</span>
-            <span>{currentText}</span>
-            <span className="h-5 w-1 bg-cyber-cyan ml-1 cursor-blink" />
+          <div className="text-xl sm:text-2xl md:text-3xl font-mono font-extrabold text-white h-9 md:h-10 flex items-center tracking-tight">
+            <span className="text-cyber-violet font-extrabold select-none mr-2.5 text-2xl md:text-3xl">&gt;</span>
+            <span className="font-extrabold tracking-wide">{currentText}</span>
+            <span className="h-6 md:h-7 w-1 md:w-1.5 bg-cyber-cyan ml-1 cursor-blink shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
           </div>
 
           {/* Paragraph Description */}
           <p className="text-base md:text-lg text-gray-400 max-w-xl leading-relaxed">
-            MCA Graduate building production-style web apps with 
+            Software Engineer & MCA Graduate building production-style web apps with 
             <span className="text-white font-semibold"> React.js, Next.js, Node.js & MongoDB </span> 
             with hands-on experience at <span className="text-cyber-cyan font-semibold">NIELIT</span>. Applying data preprocessing and model evaluation skills to solve complex AI problems.
           </p>
@@ -108,49 +113,51 @@ export default function Hero({ onHireMeClick }) {
           </div>
         </motion.div>
 
-        {/* Right Column: Hero Profile Image with Orbit / Glowing Ring */}
+        {/* Right Column: Hero Profile Image with Clean Plain Expanding Ripples & Orbiting Ball */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="lg:col-span-5 flex justify-center items-center relative"
+          className="lg:col-span-5 flex justify-center items-center relative py-6"
         >
-          {/* Animated decorative ring 1 */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[330px] w-[330px] rounded-full border border-dashed border-cyber-cyan/20 pointer-events-none"
+          {/* Plain Expanding Ripple Waves (Clean solid circles expanding & fading smoothly - No dots/dashes) */}
+          {[0, 1.0, 2.0, 3.0].map((delay, idx) => (
+            <motion.div
+              key={`plain-ripple-${idx}`}
+              initial={{ scale: 0.95, opacity: 0.65 }}
+              animate={{
+                scale: [0.95, 1.8],
+                opacity: [0.65, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                delay: delay,
+                ease: "easeOut",
+              }}
+              className="absolute h-64 w-64 md:h-72 md:w-72 rounded-full border border-cyber-cyan/45 pointer-events-none shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+            />
+          ))}
+
+          {/* Dynamic Ambient Glowing Backdrop Aura */}
+          <motion.div 
+            animate={{
+              scale: [1, 1.12, 1],
+              opacity: [0.25, 0.45, 0.25],
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute h-64 w-64 md:h-72 md:w-72 rounded-full bg-gradient-to-r from-blue-500 via-violet-500 to-cyan-400 blur-3xl pointer-events-none" 
           />
-          {/* Animated decorative ring 2 */}
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[380px] w-[380px] rounded-full border border-double border-cyber-violet/20 pointer-events-none"
-          />
-          
-          {/* Glowing Ring Backdrop */}
-          <div className="absolute h-64 w-64 rounded-full bg-gradient-to-r from-cyber-blue via-cyber-violet to-cyber-cyan opacity-20 blur-2xl animate-pulse-slow" />
 
           {/* Profile Circle Frame */}
-          <div className="relative h-64 w-64 md:h-72 md:w-72 rounded-full p-[3px] bg-gradient-to-tr from-cyber-blue via-cyber-violet to-cyber-cyan shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+          <div className="relative h-64 w-64 md:h-72 md:w-72 rounded-full p-[3px] bg-gradient-to-tr from-cyan-400 via-violet-500 to-blue-500 shadow-[0_0_35px_rgba(59,130,246,0.35)] group">
             <div className="h-full w-full rounded-full overflow-hidden bg-cyber-bg border-4 border-cyber-bg">
               <img 
                 src="/profile.jpg" 
                 alt="Nihar Ranjan Biswal" 
-                className="h-full w-full object-cover scale-105 transition-transform duration-500 hover:scale-110"
+                className="h-full w-full object-cover scale-105 transition-transform duration-500 group-hover:scale-110"
               />
             </div>
-            {/* Orbital tech node */}
-            <motion.div
-              animate={{
-                x: [0, 130, 0, -130, 0],
-                y: [-130, 0, 130, 0, -130],
-              }}
-              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-cyber-cyan border-2 border-white shadow-glow-cyan flex items-center justify-center"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping" />
-            </motion.div>
           </div>
         </motion.div>
 

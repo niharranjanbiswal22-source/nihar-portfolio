@@ -358,14 +358,23 @@ export default function AIAssistant({ isOpen, setIsOpen }) {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 font-sans">
+    <div className="fixed bottom-28 md:bottom-32 right-5 md:right-6 z-40 font-sans">
       
+      {/* Floating Tooltip Label (Desktop) */}
+      {!isOpen && (
+        <div className="absolute right-16 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 text-white text-xs font-semibold border border-cyber-cyan/30 shadow-lg pointer-events-none whitespace-nowrap backdrop-blur-md">
+          <Sparkles className="h-3.5 w-3.5 text-cyber-cyan animate-pulse" />
+          <span>AI Assistant</span>
+        </div>
+      )}
+
       {/* Floating Chat Bubble Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="h-14 w-14 rounded-full bg-gradient-to-r from-cyber-blue via-cyber-violet to-cyber-cyan shadow-[0_0_20px_rgba(139,92,246,0.6)] hover:shadow-[0_0_30px_rgba(139,92,246,0.8)] flex items-center justify-center text-white cursor-pointer relative"
+        title="Chat with Nihar's AI Assistant"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -388,7 +397,8 @@ export default function AIAssistant({ isOpen, setIsOpen }) {
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 30 }}
-            className="absolute bottom-18 right-0 w-[350px] md:w-[400px] h-[500px] rounded-3xl border border-white/10 bg-cyber-bg/95 shadow-2xl overflow-hidden flex flex-col justify-between backdrop-blur-md"
+            className="fixed bottom-[200px] md:bottom-[210px] right-5 md:right-6 w-[340px] md:w-[400px] rounded-3xl border border-white/10 bg-cyber-bg/95 shadow-2xl overflow-hidden flex flex-col justify-between backdrop-blur-md z-50"
+            style={{ height: 'min(500px, calc(100vh - 220px))' }}
           >
             {/* Header */}
             <div className="bg-white/5 px-5 py-4 border-b border-white/10 flex items-center justify-between">

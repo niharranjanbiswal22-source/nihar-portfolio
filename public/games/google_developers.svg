@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Google Developers Official Multicolor Brackets Logo -->
+  <!-- Left Bracket < (Google Blue) -->
+  <path d="M16 14L6 24L16 34" stroke="#4285F4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Slash / (Google Red) -->
+  <path d="M28 11L20 37" stroke="#EA4335" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <!-- Right Bracket > (Google Green) -->
+  <path d="M32 14L42 24L32 34" stroke="#34A853" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Google Yellow Dot -->
+  <circle cx="39" cy="11" r="2.5" fill="#FBBC05"/>
+</svg>

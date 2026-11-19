@@ -1,103 +1,197 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, Cpu, ShieldCheck, Zap } from 'lucide-react';
 
 export default function LoadingScreen({ onComplete }) {
   const [percent, setPercent] = useState(0);
 
+  // Dynamic realistic boot status updates based on progress
+  const bootStatus = useMemo(() => {
+    if (percent < 25) return { text: "INITIALIZING NEURAL RUNTIME", code: "KERNEL_0x8F", icon: Cpu };
+    if (percent < 50) return { text: "LOADING HARDWARE-ACCELERATED ASSETS", code: "GPU_VULKAN_READY", icon: Zap };
+    if (percent < 75) return { text: "SYNCHRONIZING FULL-STACK SERVICES", code: "REACT_NEXT_V15", icon: Sparkles };
+    if (percent < 99) return { text: "PREPARING EXECUTIVE INTERFACE", code: "SECURITY_256_SSL", icon: ShieldCheck };
+    return { text: "SYSTEM READY • LAUNCHING PORTFOLIO", code: "BOOT_COMPLETE", icon: ShieldCheck };
+  }, [percent]);
+
   useEffect(() => {
-    // Percentage loading counter
     const pctInterval = setInterval(() => {
       setPercent((prev) => {
         if (prev >= 100) {
           clearInterval(pctInterval);
           setTimeout(() => {
             onComplete();
-          }, 500); // Fades out slightly after reaching 100%
+          }, 450); // Smooth exit delay
           return 100;
         }
-        // Random incremental hops
-        return prev + Math.floor(Math.random() * 8) + 2;
+        // Organic pacing: fast start, smooth middle, crisp finish
+        const increment = prev < 60 ? Math.floor(Math.random() * 7) + 3 : Math.floor(Math.random() * 5) + 2;
+        return Math.min(100, prev + increment);
       });
-    }, 70);
+    }, 65);
 
-    return () => {
-      clearInterval(pctInterval);
-    };
+    return () => clearInterval(pctInterval);
   }, [onComplete]);
 
   return (
     <motion.div
+      id="loading-screen"
       initial={{ opacity: 1 }}
       exit={{ 
         opacity: 0, 
-        y: -100, 
-        transition: { duration: 0.8, ease: [0.6, 0.05, -0.01, 0.9] } 
+        scale: 1.04,
+        filter: "blur(10px)",
+        transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
       }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-cyber-bg p-6 font-mono selection:bg-transparent"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between p-6 md:p-10 select-none overflow-hidden font-mono"
+      style={{ backgroundColor: '#030712', color: '#ffffff' }} // Deep Obsidian luxury dark backdrop
     >
-      {/* Sci-fi HUD Portal Container */}
-      <div className="relative flex flex-col items-center justify-center">
+      {/* 1. Cinematic Ambient Lighting & Aurora Orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Top-center electric cyan beam */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-cyan-500/20 via-blue-600/10 to-transparent blur-[120px] rounded-full" />
         
-        {/* Outer orbital pulse ring (lighting stroke) */}
+        {/* Center glowing core */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-indigo-600/15 via-blue-500/15 to-cyan-400/10 blur-[100px] rounded-full" />
+        
+        {/* Subtle grid pattern for tech depth */}
+        <div 
+          className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]" 
+        />
+      </div>
+
+      {/* 2. Top Header Bar: Architecture Metadata */}
+      <div className="w-full max-w-4xl flex items-center justify-between text-[11px] z-10 pt-2" style={{ color: '#94a3b8' }}>
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+          </span>
+          <span className="font-bold tracking-widest" style={{ color: '#ffffff' }}>NIHAR.DEV</span>
+          <span className="text-slate-600">/</span>
+          <span className="font-medium" style={{ color: '#94a3b8' }}>CORE OS 2026</span>
+        </div>
+
+        <div className="hidden sm:flex items-center gap-3 font-mono text-[10px]" style={{ color: '#94a3b8' }}>
+          <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 font-bold" style={{ color: '#22d3ee' }}>
+            60 FPS ENGINE
+          </span>
+          <span>LATENCY: &lt;1ms</span>
+        </div>
+      </div>
+
+      {/* 3. Center Portal: Sleek Compact Holographic Badge & Orbit Rings */}
+      <div className="relative flex flex-col items-center justify-center my-auto z-10 py-4">
+        
+        {/* Outer Orbit Light Sweep Ring (Refined Compact Size) */}
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="h-44 w-44 rounded-full border border-dashed border-cyber-cyan/40 shadow-[0_0_30px_rgba(6,182,212,0.15)] flex items-center justify-center"
-        />
+          transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+          className="h-32 w-32 sm:h-36 sm:w-36 rounded-full border border-dashed border-cyan-500/30 p-1.5 flex items-center justify-center relative shadow-[0_0_35px_rgba(6,182,212,0.18)]"
+        >
+          {/* Orbiting Satellite Light Sparkle */}
+          <div className="absolute -top-1 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_#818cf8]" />
+        </motion.div>
 
-        {/* Inner spinning scanning gear */}
+        {/* Counter-Rotating Radar Gear Ring (Compact) */}
         <motion.div
           animate={{ rotate: -360 }}
-          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-          className="absolute h-36 w-36 rounded-full border border-double border-cyber-violet/30 border-t-cyber-violet border-b-cyber-violet shadow-[0_0_20px_rgba(139,92,246,0.15)]"
+          transition={{ duration: 11, repeat: Infinity, ease: "linear" }}
+          className="absolute h-26 w-26 sm:h-30 sm:w-30 rounded-full border border-indigo-500/30 border-t-cyan-400 border-b-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+          style={{ borderDasharray: "4 8" }}
         />
 
-        {/* Outer glow aura layer */}
+        {/* Breathing Radiant Glow Aura (Compact) */}
         <motion.div
           animate={{ 
-            scale: [0.96, 1.04, 0.96],
-            opacity: [0.3, 0.6, 0.3]
+            scale: [0.92, 1.08, 0.92],
+            opacity: [0.35, 0.7, 0.35]
           }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute h-28 w-28 rounded-full bg-gradient-to-r from-cyber-blue via-cyber-violet to-cyber-cyan filter blur-xl -z-10"
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 filter blur-xl -z-10"
         />
 
-        {/* Center circular logo frame */}
-        <div className="absolute h-28 w-28 rounded-full p-[2px] bg-gradient-to-tr from-cyber-blue via-cyber-violet to-cyber-cyan shadow-[0_0_25px_rgba(59,130,246,0.4)] overflow-hidden">
-          <div className="h-full w-full rounded-full overflow-hidden bg-cyber-bg border border-cyber-bg">
+        {/* Central Circular Brand Glass Badge (Compact & Elegant ~80-96px) */}
+        <div className="absolute h-20 w-20 sm:h-24 sm:w-24 rounded-full p-[2.5px] bg-gradient-to-tr from-cyan-400 via-indigo-500 to-blue-600 shadow-[0_0_25px_rgba(6,182,212,0.5)] overflow-hidden">
+          <div className="h-full w-full rounded-full overflow-hidden bg-slate-950/95 backdrop-blur-md relative group flex items-center justify-center border border-white/10">
+            
+            {/* The Authentic NR Logo */}
             <img 
               src="/logo.jpg" 
-              alt="Brand Logo" 
-              className="h-full w-full object-cover scale-110"
+              alt="Nihar Ranjan Biswal Brand Logo" 
+              className="h-full w-full object-cover scale-105"
+            />
+
+            {/* Subtle Glass Sheen Diagonal Sweep */}
+            <motion.div
+              animate={{ x: ['-120%', '150%'] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
+              className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12 pointer-events-none"
             />
           </div>
         </div>
 
       </div>
 
-      {/* Modern Minimalist Progress HUD Info */}
-      <div className="mt-12 flex flex-col items-center gap-3">
+      {/* 4. Bottom HUD: Real-time Status, Liquid Progress Bar, and Pure White 1-100 Percent */}
+      <div className="w-full max-w-md flex flex-col items-center gap-3 z-10 pb-4 text-center">
         
-        {/* Status code indicator */}
-        <div className="text-[10px] uppercase font-bold tracking-widest text-gray-500 flex items-center gap-1.5 select-none">
-          <span className="h-1.5 w-1.5 rounded-full bg-cyber-cyan animate-ping" />
-          <span>System Boot sequence: Ingesting core</span>
+        {/* Dynamic Boot Sequence Tag with Icon */}
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-semibold shadow-sm" style={{ color: '#cbd5e1' }}>
+          {(() => {
+            const Icon = bootStatus.icon;
+            return <Icon className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />;
+          })()}
+          <span className="tracking-wider">{bootStatus.text}</span>
         </div>
 
-        {/* Percentage Counter text */}
-        <div className="text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-cyber-cyan text-glow-cyan">
-          {Math.min(100, percent)}%
+        {/* Ultra-Crisp Pure White 1-100 Percentage Display */}
+        <div className="flex items-baseline justify-center gap-1.5 my-0.5">
+          <span 
+            className="loading-percent-number text-5xl sm:text-6xl font-black tracking-tight"
+            style={{ 
+              color: '#ffffff', 
+              textShadow: '0 0 25px rgba(255, 255, 255, 0.85), 0 0 50px rgba(6, 182, 212, 0.5)' 
+            }}
+          >
+            {Math.min(100, percent)}
+          </span>
+          <span 
+            className="text-2xl sm:text-3xl font-extrabold"
+            style={{ 
+              color: '#22d3ee',
+              textShadow: '0 0 15px rgba(34, 211, 238, 0.7)'
+            }}
+          >
+            %
+          </span>
         </div>
 
-        {/* Sleek Line progress tracker */}
-        <div className="h-[2px] w-48 rounded-full bg-white/5 overflow-hidden relative border border-white/5 shadow-inner">
+        {/* High-Precision Liquid Progress Bar */}
+        <div className="w-full h-2 rounded-full bg-slate-900 border border-white/10 overflow-hidden relative p-[1px] shadow-inner">
           <motion.div 
-            className="h-full bg-gradient-to-r from-cyber-blue via-cyber-violet to-cyber-cyan shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+            className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 relative"
             style={{ width: `${Math.min(100, percent)}%` }}
-          />
+            transition={{ ease: "easeOut" }}
+          >
+            {/* Leading Comet Head Glow Spark */}
+            <div 
+              className="absolute right-0 top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full shadow-[0_0_12px_#38bdf8]" 
+              style={{ backgroundColor: '#ffffff' }}
+            />
+          </motion.div>
+        </div>
+
+        {/* Footer Subtext: Developer Identity & Security */}
+        <div className="flex items-center justify-between w-full text-[10px] font-mono pt-1" style={{ color: '#64748b' }}>
+          <span>HOST: VERIFIED SECURE</span>
+          <span className="font-bold" style={{ color: '#cbd5e1' }}>NIHAR RANJAN BISWAL</span>
+          <span>LOC: ODISHA, IN</span>
         </div>
 
       </div>
+
     </motion.div>
   );
 }

@@ -12,7 +12,7 @@ const projects = [
     metric: "Accuracy: ~84%",
     type: "IPL_PREDICTOR_v1.0",
     visual: (
-      <img src="/ipl_predictor.png" alt="AI IPL Match Predictor screenshot" className="w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/ipl_predictor.png" alt="AI IPL Match Predictor screenshot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -25,7 +25,7 @@ const projects = [
     metric: "F1 Score: 0.89",
     type: "DISEASE_DETECTION_ML",
     visual: (
-      <img src="/disease_detection.png" alt="Disease Detection AI Model screenshot" className="w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/disease_detection.png" alt="Disease Detection AI Model screenshot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -38,7 +38,7 @@ const projects = [
     metric: "Auth: JWT / Secure",
     type: "ONLINE_EXAM_SYSTEM",
     visual: (
-      <img src="/online_exam_system.jpg" alt="Online Examination & Result System screenshot" className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/online_exam_system.jpg" alt="Online Examination & Result System screenshot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -51,7 +51,7 @@ const projects = [
     metric: "Pharma CRM / Sales",
     type: "PHARMA_CRM_v1.2",
     visual: (
-      <img src="/pharma_crm.png" alt="AI Meridian Pharma CRM dashboard screenshot" className="w-full h-full object-cover object-top opacity-85 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/pharma_crm.png" alt="AI Meridian Pharma CRM dashboard screenshot" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -64,7 +64,7 @@ const projects = [
     metric: "Text-to-Image ML",
     type: "AI_IMAGE_GEN_v2.0",
     visual: (
-      <img src="/nrb_ai_image_gen.jpg" alt="NRB AI Image Generator screenshot" className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/nrb_ai_image_gen.jpg" alt="NRB AI Image Generator screenshot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -77,7 +77,7 @@ const projects = [
     metric: "Live Web Sandbox",
     type: "CODE_COMPILER_v1.0",
     visual: (
-      <img src="/compiler.png" alt="NRB Code Compiler screenshot" className="w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/compiler.png" alt="NRB Code Compiler screenshot" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -90,7 +90,7 @@ const projects = [
     metric: "Live Portfolio",
     type: "PORTFOLIO_v3.0",
     visual: (
-      <img src="/portfolio_preview.png" alt="Nihar Ranjan Biswal Portfolio screenshot" className="w-full h-full object-cover object-top opacity-80 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/portfolio_preview.png" alt="Nihar Ranjan Biswal Portfolio screenshot" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -103,7 +103,7 @@ const projects = [
     metric: "Live AI Surveillance",
     type: "FACE_DETECTION_AI",
     visual: (
-      <img src="/criminal_face_detection.jpg" alt="Criminal Face Detection AI screenshot" className="w-full h-full object-cover object-top opacity-80 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/criminal_face_detection.jpg" alt="Criminal Face Detection AI screenshot" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -116,7 +116,7 @@ const projects = [
     metric: "Sub-second Streaming",
     type: "VOICE_AI_v1.0",
     visual: (
-      <img src="/omnivoice_ai.png" alt="OmniVoice AI screenshot" className="w-full h-full object-cover object-top opacity-80 group-hover:scale-105 transition-transform duration-500" />
+      <img src="/omnivoice_ai.png" alt="OmniVoice AI screenshot" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
     )
   },
   {
@@ -210,16 +210,14 @@ export default function Projects({ isPremiumUnlocked, onOpenUnlock }) {
             >
               <div>
                 {/* Tech Visual Header */}
-                <div className="h-44 w-full bg-black/40 border-b border-white/10 relative p-4 flex items-center justify-center overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyber-bg to-transparent opacity-80" />
-                  
-                  {/* System Header status */}
-                  <div className="absolute top-3 left-4 right-4 flex justify-between items-center text-[10px] font-mono text-gray-500">
-                    <span>{project.type}</span>
-                    <span className="text-cyber-cyan font-bold">{project.metric}</span>
-                  </div>
-
+                <div className="h-44 w-full bg-slate-900/40 relative flex items-center justify-center overflow-hidden">
                   {project.visual}
+
+                  {/* System Header status */}
+                  <div className="absolute top-3 left-3 right-3 flex justify-between items-center text-[10px] font-mono z-10 pointer-events-none">
+                    <span className="px-2 py-0.5 rounded bg-black/80 text-gray-300 border border-white/10 backdrop-blur-sm font-semibold">{project.type}</span>
+                    <span className="px-2 py-0.5 rounded bg-black/80 text-cyber-cyan font-bold border border-white/10 backdrop-blur-sm">{project.metric}</span>
+                  </div>
                 </div>
 
                 {/* Info Area */}

@@ -6,21 +6,21 @@ const stats = [
   {
     id: 1,
     icon: Award,
-    value: "6+ Months",
+    value: "1+ Year",
     label: "NIELIT Experience",
     color: "text-cyber-blue"
   },
   {
     id: 2,
     icon: Layers,
-    value: "15+ Projects",
+    value: "56+ Projects",
     label: "Core Projects Built",
     color: "text-cyber-cyan"
   },
   {
     id: 3,
     icon: Terminal,
-    value: "15+ Tools",
+    value: "24+ Tools",
     label: "Languages & Frameworks",
     color: "text-cyber-violet"
   },

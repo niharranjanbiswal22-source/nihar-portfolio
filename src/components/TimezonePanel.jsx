@@ -96,32 +96,50 @@ export default function TimezonePanel() {
         {/* Left Column: Running Clock HUDs */}
         <div className="lg:col-span-5 space-y-6 text-left">
           <div>
-            <div className="text-[10px] text-cyber-cyan font-bold tracking-widest uppercase flex items-center gap-1.5 mb-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              <span>Real-Time Sync Engine</span>
+            {/* Live Indicator Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyber-cyan/10 border border-cyber-cyan/25 text-cyber-cyan text-xs font-semibold tracking-wide mb-3">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-wider">Live Timezone Engine</span>
             </div>
-            <h3 className="text-2xl font-bold text-white tracking-wide uppercase">Bix My World</h3>
-            <p className="text-sm text-gray-400 mt-2 font-mono">
-              "I am very flexible with timezone adjustments and always available for international team syncs."
+
+            <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
+              Global Collaboration, <span className="gradient-text">Any Timezone</span>
+            </h3>
+
+            <p className="text-sm text-gray-300 mt-2.5 leading-relaxed font-sans">
+              Based in <span className="font-semibold text-cyber-cyan">Bhubaneswar (IST)</span> — seamlessly synchronizing with US, European, and APAC teams for daily standups, agile sprints, and code reviews.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             {/* Clock 1: IST */}
-            <div className="glass-panel p-5 rounded-2xl border border-cyber-cyan/20 bg-cyber-cyan/5 flex flex-col gap-1 relative overflow-hidden shadow-lg">
-              <div className="absolute top-3 right-3 text-[9px] font-bold text-cyber-cyan bg-cyber-cyan/10 border border-cyber-cyan/20 px-2 py-0.5 rounded uppercase">IST (India)</div>
-              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Bhubaneswar</span>
-              <span className="text-3xl font-black text-white font-mono tracking-tight text-glow-cyan">{istTime}</span>
-              <span className="text-[10px] text-gray-400 font-medium font-mono">{istDate}</span>
+            <div className="glass-panel p-5 rounded-2xl border border-cyber-cyan/20 bg-cyber-cyan/5 flex flex-col gap-1.5 relative overflow-hidden shadow-lg hover:border-cyber-cyan/40 transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Bhubaneswar</span>
+                <span className="text-[9px] font-mono font-bold text-cyber-cyan bg-cyber-cyan/10 border border-cyber-cyan/20 px-2.5 py-0.5 rounded-full uppercase">IST (UTC +5:30)</span>
+              </div>
+              <div className="text-3xl font-black text-white font-mono tracking-tight text-glow-cyan py-0.5">{istTime}</div>
+              <div className="flex items-center justify-between text-[10px] text-gray-400 font-medium font-mono pt-1.5 border-t border-white/5">
+                <span>{istDate}</span>
+                <span className="text-emerald-400 font-sans font-semibold text-[10px]">● Primary Base</span>
+              </div>
             </div>
 
             {/* Clock 2: UTC */}
-            <div className="glass-panel p-5 rounded-2xl border border-cyber-violet/20 bg-cyber-violet/5 flex flex-col gap-1 relative overflow-hidden shadow-lg">
-              <div className="absolute top-3 right-3 text-[9px] font-bold text-cyber-violet bg-cyber-violet/10 border border-cyber-violet/20 px-2 py-0.5 rounded uppercase">UTC</div>
-              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Universal Time</span>
-              <span className="text-3xl font-black text-white font-mono tracking-tight text-glow-violet">{utcTime}</span>
-              <span className="text-[10px] text-gray-400 font-medium font-mono">{utcDate}</span>
+            <div className="glass-panel p-5 rounded-2xl border border-cyber-violet/20 bg-cyber-violet/5 flex flex-col gap-1.5 relative overflow-hidden shadow-lg hover:border-cyber-violet/40 transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Universal Time</span>
+                <span className="text-[9px] font-mono font-bold text-cyber-violet bg-cyber-violet/10 border border-cyber-violet/20 px-2.5 py-0.5 rounded-full uppercase">UTC (GMT)</span>
+              </div>
+              <div className="text-3xl font-black text-white font-mono tracking-tight text-glow-violet py-0.5">{utcTime}</div>
+              <div className="flex items-center justify-between text-[10px] text-gray-400 font-medium font-mono pt-1.5 border-t border-white/5">
+                <span>{utcDate}</span>
+                <span className="text-cyber-violet font-sans font-semibold text-[10px]">● Global Standard</span>
+              </div>
             </div>
 
           </div>
@@ -159,8 +177,8 @@ export default function TimezonePanel() {
         {/* Right Column: Social Media Links Finder */}
         <div className="lg:col-span-4 space-y-4 text-left">
           <div>
-            <h4 className="text-lg font-bold text-white tracking-wide uppercase">Find Me</h4>
-            <p className="text-xs text-gray-400">Feel free to connect or drop a message on any of these channels.</p>
+            <h4 className="text-lg font-bold text-white tracking-wide uppercase">Connect & <span className="gradient-text">Network</span></h4>
+            <p className="text-xs text-gray-400">Direct channels to connect, discuss projects, or collaborate.</p>
           </div>
 
           <div className="grid grid-cols-3 gap-2.5">

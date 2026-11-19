@@ -6,7 +6,8 @@ const skillCategories = [
   {
     title: "Languages",
     icon: Code2,
-    color: "text-cyber-blue border-cyber-blue/30",
+    brandColor: "#2563eb",
+    color: "text-blue-600 dark:text-cyber-blue border-blue-500/30",
     skills: [
       { name: "Java", level: "90%" },
       { name: "Python", level: "85%" },
@@ -18,7 +19,8 @@ const skillCategories = [
   {
     title: "Full Stack Development",
     icon: Server,
-    color: "text-cyber-cyan border-cyber-cyan/30",
+    brandColor: "#0284c7",
+    color: "text-cyan-600 dark:text-cyber-cyan border-cyan-500/30",
     skills: [
       { name: "React.js", level: "90%" },
       { name: "Next.js", level: "80%" },
@@ -33,7 +35,8 @@ const skillCategories = [
   {
     title: "Data & AI/ML",
     icon: Brain,
-    color: "text-cyber-violet border-cyber-violet/30",
+    brandColor: "#7c3aed",
+    color: "text-purple-600 dark:text-cyber-violet border-purple-500/30",
     skills: [
       { name: "Pandas", level: "75%" },
       { name: "NumPy", level: "75%" },
@@ -46,7 +49,8 @@ const skillCategories = [
   {
     title: "Databases & Tools",
     icon: Database,
-    color: "text-emerald-500 border-emerald-500/30",
+    brandColor: "#059669",
+    color: "text-emerald-600 dark:text-emerald-500 border-emerald-500/30",
     skills: [
       { name: "MongoDB", level: "85%" },
       { name: "SQL DBs", level: "80%" },
@@ -58,7 +62,8 @@ const skillCategories = [
   {
     title: "Cloud & Infrastructure",
     icon: Cloud,
-    color: "text-pink-500 border-pink-500/30",
+    brandColor: "#db2777",
+    color: "text-pink-600 dark:text-pink-500 border-pink-500/30",
     skills: [
       { name: "Oracle Cloud (OCI)", level: "70%" },
       { name: "Cloud Computing", level: "75%" },
@@ -231,14 +236,20 @@ export default function Skills() {
                 <button
                   key={category.title}
                   onClick={() => setActiveCategory(index)}
-                  className={`flex items-center gap-3 w-full text-left px-5 py-4 rounded-xl border text-sm font-medium transition-all duration-300 min-w-[200px] lg:min-w-0 cursor-pointer ${
+                  className={`skills-tab-button flex items-center gap-3 w-full text-left px-5 py-4 rounded-xl border text-sm font-semibold transition-all duration-300 min-w-[200px] lg:min-w-0 cursor-pointer ${
                     isActive 
-                      ? 'bg-gradient-to-r from-cyber-blue/10 to-cyber-violet/10 border-cyber-violet/50 text-white shadow-md' 
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-500 shadow-lg shadow-blue-500/25 scale-[1.01]' 
                       : 'bg-white/5 border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <div className={`h-8 w-8 rounded-lg flex items-center justify-center bg-white/5 border ${category.color}`}>
-                    <Icon className="h-4.5 w-4.5" />
+                  <div 
+                    className="skills-tab-icon h-8 w-8 rounded-lg flex items-center justify-center shrink-0 bg-white shadow-sm border border-slate-200/50"
+                    style={{ '--tab-icon-color': category.brandColor }}
+                  >
+                    <Icon 
+                      className="h-4.5 w-4.5" 
+                      style={{ color: category.brandColor, stroke: category.brandColor }} 
+                    />
                   </div>
                   <span className="truncate">{category.title}</span>
                 </button>

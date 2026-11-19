@@ -85,12 +85,11 @@ export default function Education() {
             >
               <div>
                 {/* Institution Image Header */}
-                <div className="h-48 w-full bg-black/30 border-b border-white/5 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyber-bg/90 to-transparent z-10" />
+                <div className="h-48 w-full bg-slate-900/40 relative overflow-hidden">
                   <img 
                     src={edu.image} 
                     alt={edu.institution} 
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-90"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   
                   {/* Badge & Timeline floating controls */}
